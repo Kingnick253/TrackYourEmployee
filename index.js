@@ -21,10 +21,14 @@
 // create a new role
 
 //  get the existing department form the 'department' table
-    // THEN // Prompt the user for the "title", "salary" and department for the role
+    function createRole(){
 
+        // THEN // Prompt the user for the "title", "salary" and department for the role
+        
         // Then Run the query
         // INSERT INTO  role (title, salary, department_id)
         // VALUES ("Manager", 120000, 1)
-
-            // THEN ask the user what they want to do next
+        
+        // THEN ask the user what they want to do next
+        
+    }
