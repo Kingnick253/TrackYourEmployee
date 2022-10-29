@@ -5,7 +5,7 @@ VALUES ("Sales"),
        ("HR"),
        ("CustomerService");
 
-       INSERT INTO role(title, salary, deparentment_id)
+       INSERT INTO role(title, salary, department_id)
 VALUES ( "Sales Rep", 70000, 1),
        ( "Head Tech", 160000, 2),
        ( "Receptionist", 50000, 3),
@@ -14,7 +14,7 @@ VALUES ( "Sales Rep", 70000, 1),
 
 
 
-       INSERT INTO employee(first_name, last_name, manager_id, role_id)
+       INSERT INTO employee(first_name, last_name, role_id, manager_id)
 VALUES ("Reinah", "Smith", 1,  1),
        ("Andre", "Webster", 2, 2),
        ("Malik", "White", 2, 2),
