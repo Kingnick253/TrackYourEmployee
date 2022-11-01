@@ -10,13 +10,13 @@
 
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
-require("console.table");
+// require("console.table");
 
 const db_connection = mysql.createConnection(
     {
         host: "localhost",
         user: "root",
-        password: "",
+        password: "#Nick123",
         database: "employee_trackerdb",
     },
     console.log("Connected to Employee Tracker db")
@@ -27,10 +27,10 @@ function startApp(){
     inquirer
         .prompt([
             {
-                message:"",
-                name: options,
-                type: list,
-                choice: [
+                message:"Hello Friend",
+                name: "options",
+                type: "list",
+                choices: [
                     "View All Departments",
                     "Add New Department",
                     "View All Roles",
@@ -45,13 +45,22 @@ function startApp(){
         ])
         .then((response) =>{
             switch (response.options){
-                case "View All Departments"
+                case "View All Departments":
                 viewAllDepartments();
                 break;
             }
-        })
+        });
 }
 
+startApp();
+
+    function viewAllDepartments(){
+        db_connection.query("SELECT * FROM `departments`", function (err, result){
+            if(err) throw err;
+           console.table(result);
+           startApp();
+        });
+    }
 // CREATE new department
 
 // prompt the user for the " name" of the department
