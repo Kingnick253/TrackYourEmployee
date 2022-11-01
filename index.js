@@ -16,7 +16,7 @@ const db_connection = mysql.createConnection(
     {
         host: "localhost",
         user: "root",
-        password: "#Nick123",
+        password: "",
         database: "employee_trackerdb",
     },
     console.log("Connected to Employee Tracker db")
@@ -46,8 +46,11 @@ function startApp(){
         .then((response) =>{
             switch (response.options){
                 case "View All Departments":
-                viewAllDepartments();
-                break;
+                    viewAllDepartments();
+                    break;
+                case "Add New Department":
+                    addNewDepartment();
+                    break;
             }
         });
 }
@@ -60,6 +63,28 @@ startApp();
            console.table(result);
            startApp();
         });
+    }
+
+    function addNewDepartment(){
+        inquirer
+            .prompt([
+                {
+                    message: "What is the name for your new Department?",
+                    name: "newDepartment",
+                    type: "input",
+                },
+            ])
+            .then((response) => {
+                db_connection.query("INSERT INTO departments (department_name) VALUES (?)",
+                response.newDepartment,
+                (err, results) => {
+                    if(err) throw err;
+                }
+                );
+                startApp();
+            });
+
+
     }
 // CREATE new department
 
