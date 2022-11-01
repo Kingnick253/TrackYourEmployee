@@ -54,6 +54,9 @@ function startApp(){
                 case "View All Roles":
                     viewAllRoles();
                     break;
+                case "Add New Role":
+                    addNewRole();
+                    break;
             }
         });
 }
@@ -80,7 +83,7 @@ startApp();
             .then((response) => {
                 db_connection.query("INSERT INTO departments (department_name) VALUES (?)",
                 response.newDepartment,
-                (err, results) => {
+                (err, result) => {
                     if(err) throw err;
                 }
                 );
@@ -96,6 +99,47 @@ startApp();
            startApp();
         });
 
+    }
+
+    function addNewRole(){
+        db_connection.query("SELECT * FROM `departments`", function (err, result){
+            if(err) throw err;
+            const departmentData = result.map((departments) => ({
+                name: departments.name,
+                value: departments.id,
+
+            }));
+            inquirer
+            .prompt([
+                {
+                    message: "What is the name for your new Role?",
+                    name: "title",
+                    type: "input",
+                },
+                {
+                    message: "How does is the salary of this new Role?",
+                    name: "salary",
+                    type: "input",
+                },
+                {
+                    message:"What department is this role included in?",
+                    name: "departments",
+                    type: "list",
+                    choices: departmentData,
+                },
+            ])
+            .then((response) => {
+                db_connection.query("INSERT INTO role(title, salary, department_id) VALUES (?,?,?)",
+                [response.title, response.salary, response.departments],
+                function (err, result){
+                    if(err) throw err;
+                }
+                );
+                console.table(response);
+                startApp();
+            });
+        });
+        
     }
 // CREATE new department
 
