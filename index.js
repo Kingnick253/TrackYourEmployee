@@ -51,6 +51,9 @@ function startApp(){
                 case "Add New Department":
                     addNewDepartment();
                     break;
+                case "View All Roles":
+                    viewAllRoles();
+                    break;
             }
         });
 }
@@ -83,7 +86,15 @@ startApp();
                 );
                 startApp();
             });
+    }
 
+
+    function viewAllRoles(){
+        db_connection.query("SELECT * FROM `role`", function (err, result){
+            if(err) throw err;
+           console.table(result);
+           startApp();
+        });
 
     }
 // CREATE new department
