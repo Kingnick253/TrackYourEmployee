@@ -1,16 +1,6 @@
-
-// View all Departments
-//SELECT * FROM departments
-
-// View all Roles
-// SELECT * FROM  roles
-
-// View all EMPLOYEE
-// SELECT * FROM  employee;
-
 const mysql = require("mysql2");
 const inquirer = require("inquirer");
-// require("console.table");
+
 
 const db_connection = mysql.createConnection(
     {
@@ -22,7 +12,7 @@ const db_connection = mysql.createConnection(
     console.log("Connected to Employee Tracker db")
 );
 
-
+// Start prompts and presents the list
 function startApp(){
     inquirer
         .prompt([
@@ -43,6 +33,7 @@ function startApp(){
 
             },
         ])
+        // this will run a funciton depending on what the user picks
         .then((response) =>{
             switch (response.options){
                 case "View All Departments":
@@ -74,7 +65,7 @@ function startApp(){
 }
 
 startApp();
-
+    // function to view all Departments
     function viewAllDepartments(){
         db_connection.query("SELECT * FROM `departments`", function (err, result){
             if(err) throw err;
@@ -82,7 +73,7 @@ startApp();
            startApp();
         });
     }
-
+    // function will add new departments
     function addNewDepartment(){
         inquirer
             .prompt([
@@ -103,7 +94,7 @@ startApp();
             });
     }
 
-
+    // views all roles
     function viewAllRoles(){
         db_connection.query("SELECT * FROM `role`", function (err, result){
             if(err) throw err;
@@ -112,7 +103,7 @@ startApp();
         });
 
     }
-
+    // will add a new role
     function addNewRole(){
         db_connection.query("SELECT * FROM `departments`", function (err, result){
             if(err) throw err;
@@ -140,6 +131,7 @@ startApp();
                     choices: departmentData,
                 },
             ])
+            // takes the answers from the user and applies the new role to the table 
             .then((response) => {
                 db_connection.query("INSERT INTO role(title, salary, department_id) VALUES (?,?,?)",
                 [response.title, response.salary, response.departments],
@@ -153,7 +145,7 @@ startApp();
         });
         
     }
-
+    // updates Role
     function updateARole(){
         db_connection.query("SELECT * FROM `employee`", function (err, result){
             if(err) throw err;
@@ -213,6 +205,7 @@ startApp();
 
         });
     }
+    // views all the employeees
     function viewAllEmployees(){
         db_connection.query("SELECT * FROM `employee`", function (err, result){
             if(err) throw err;
@@ -221,7 +214,7 @@ startApp();
         });
 
     }
-
+    // adds a new employee
     function addNewEmployee(){
 
         db_connection.query("SELECT * FROM `employee`", function(err, result){
@@ -280,28 +273,4 @@ startApp();
                 });
             });
         });
-    }
-// CREATE new department
-
-// prompt the user for the " name" of the department
-
-    // THEN run the query
-    // INSERT INTO department (name)
-    // VALUES  ("Sales");
-//       
-    // THEN as the user what they want to do next
-
-// create a new role
-
-//  get the existing department form the 'department' table
-    function createRole(){
-
-        // THEN // Prompt the user for the "title", "salary" and department for the role
-        
-        // Then Run the query
-        // INSERT INTO  role (title, salary, department_id)
-        // VALUES ("Manager", 120000, 1)
-        
-        // THEN ask the user what they want to do next
-        
     }
