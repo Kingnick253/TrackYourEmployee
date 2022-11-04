@@ -63,6 +63,9 @@ function startApp(){
                 case "View All Employees":
                     viewAllEmployees();
                     break;
+                case "Add New Employee":
+                    addNewEmployee();
+                    break;
             }
         });
 }
@@ -214,6 +217,66 @@ startApp();
            startApp();
         });
 
+    }
+
+    function addNewEmployee(){
+
+        db_connection.query("SELECT * FROM `employee`", function(err, result){
+            if(err) throw err;
+            const employeePosition = result.map((employee) => ({
+                name: employee.first_name + " " + employee.last_name,
+                value: employee.id,
+                
+            }));
+        db_connection.query("SELECT * FROM `role`", function(err, result){
+            if(err) throw err;
+            const employeesRole = result.map((role) => ({
+                name: role.title,
+                value: role.id,
+            }));
+            inquirer
+                .prompt([
+                    {
+                        message: "What is your first name?",
+                        name: "first_name",
+                        type: "input",
+                    },
+                    {
+                        message: "What is your last name?",
+                        name: "last_name",
+                        type: "input",
+                    },
+                    {
+                        message: "What position do you work ?",
+                        name: "role_id",
+                        type: "list",
+                        choices: employeesRole,
+                    },
+                    {
+                        message: "Who is your manager",
+                        name: "manager_id",
+                        type: "list",
+                        choices: employeePosition,
+                    },
+                ])
+                .then((response) => {
+                    db_connection.query("INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUE (?,?,?,?)",
+                    [
+                        response.first_name,
+                        response.last_name,
+                        response.role_id,
+                        response.manager_id
+                    ],
+                    function (err, result) {
+                        if(err) throw err;                        
+                    }
+                    
+                    );
+                    console.table(response);
+                    startApp();
+                });
+            });
+        });
     }
 // CREATE new department
 
