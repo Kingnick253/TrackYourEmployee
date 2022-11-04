@@ -27,7 +27,7 @@ function startApp(){
     inquirer
         .prompt([
             {
-                message:"Hello Friend",
+                message:"Select and Option to begin",
                 name: "options",
                 type: "list",
                 choices: [
@@ -65,6 +65,9 @@ function startApp(){
                     break;
                 case "Add New Employee":
                     addNewEmployee();
+                    break;
+                case "Done":
+                    db_connection.end();
                     break;
             }
         });
