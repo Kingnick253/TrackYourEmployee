@@ -60,6 +60,9 @@ function startApp(){
                 case "Update A Role":
                     updateARole();
                     break;
+                case "View All Employees":
+                    viewAllEmployees();
+                    break;
             }
         });
 }
@@ -203,6 +206,14 @@ startApp();
             });
 
         });
+    }
+    function viewAllEmployees(){
+        db_connection.query("SELECT * FROM `employee`", function (err, result){
+            if(err) throw err;
+           console.table(result);
+           startApp();
+        });
+
     }
 // CREATE new department
 
