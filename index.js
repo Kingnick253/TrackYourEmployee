@@ -16,7 +16,7 @@ const db_connection = mysql.createConnection(
     {
         host: "localhost",
         user: "root",
-        password: "",
+        password: "#Nick123",
         database: "employee_trackerdb",
     },
     console.log("Connected to Employee Tracker db")
@@ -56,6 +56,9 @@ function startApp(){
                     break;
                 case "Add New Role":
                     addNewRole();
+                    break;
+                case "Update A Role":
+                    updateARole();
                     break;
             }
         });
@@ -140,6 +143,66 @@ startApp();
             });
         });
         
+    }
+
+    function updateARole(){
+        db_connection.query("SELECT * FROM `employee`", function (err, result){
+            if(err) throw err;
+            const employeePosition = result.map((employee) => ({
+                name: employee.first_name + " " + employee.last_name,
+                value: employee.id,
+            }));
+        
+        db_connection.query("SELECT * FROM role", function (err, result){
+            if(err) throw err;
+            const employeesRole = result.map((role) => ({
+                name: role.title,
+                value: role.id,
+            }));
+                inquirer
+                    .prompt([
+                        {
+                            message: "What employee are you going to update?",
+                            name: "employeeId",
+                            type: "list",
+                            choices: employeePosition,
+                        },
+                        {
+                            message: "What is the new first name.",
+                            name: "first_name",
+                            type: "input",
+                        },
+                        {
+                            message: "What is the new Last Name",
+                            name: "last_name",
+                            type: "input",
+                        },
+                        {
+                            message: "What role would you like to change them to?",
+                            name: "role_id",
+                            type: "list",
+                            choices: employeesRole,
+                        },
+                    ])
+                    .then((response) => {
+                        db_connection.query("UPDATE employee SET first_name = ?, last_name = ?, role_id = ? WHERE id = ?",
+                        [
+                            response.first_name,
+                            response.last_name,
+                            response.role_id,
+                            response.employeeId
+                        ],
+                        function (err, result) {
+                            if(err) throw err;
+                        }
+
+                    );
+                    console.table(response);
+                    startApp();
+                    });
+            });
+
+        });
     }
 // CREATE new department
 
